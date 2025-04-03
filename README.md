@@ -1,30 +1,46 @@
-🧠 Contextual Diffusion Model for MNIST
-This project implements a conditional diffusion model using a Contextual U-Net architecture to generate handwritten digits from the MNIST dataset.
+Diffusion Model for MNIST
+This project implements a denoising diffusion probabilistic model (DDPM) to generate handwritten digits from the MNIST dataset using a cosine-based noise schedule and a U-Net denoising architecture.
 
 🔍 Key Features:
-Dataset: 28x28 grayscale MNIST images (digits 0–9)
+Dataset: MNIST — 28x28 grayscale digits (0–9)
 
-Architecture: U-Net enhanced with residual convolution blocks
+Preprocessing:
 
-Conditional Generation: Class-conditioned via Classifier-Free Guidance and context masking
+Normalize image pixel values
 
-Diffusion Process:
+Shuffle dataset for improved generalization
 
-Forward Diffusion: Adds Gaussian noise using a linear beta schedule
+Forward Diffusion:
 
-Reverse Process: Learned by the model using MSE loss
+Adds Gaussian noise to images over multiple timesteps
 
-Sampling Control: guide_w allows adjustment of how strongly the output aligns with the target class
+Noise magnitude controlled using a cosine schedule
 
-Optimizer: Adam with linearly decaying learning rate
+Reverse Denoising Process:
 
-Data Pipeline:
+Learns to reconstruct clean images from noisy inputs
 
-Normalize and convert images to tensors
+Uses U-Net with timestep embeddings for temporal awareness
 
-Batch and shuffle (batch size = 256)
+Sampling:
 
-One-hot encode class labels
+Final generated image is obtained by reversing the noising process
+
+Guided by learned denoising steps
+
+🧠 Model Architecture:
+U-Net with timestep conditioning to handle temporal information during denoising
+
+No explicit class conditioning (i.e., this is unconditional generation)
+
+⚙️ Training Details:
+Gaussian noise added at every timestep during the forward process
+
+Cosine schedule used to gradually vary noise over time
+
+Loss: Typically MSE between predicted and actual noise at each timestep
 
 📦 Output:
-Generates MNIST-like digit images conditioned on target classes with adjustable guidance strength.
+Generates realistic-looking handwritten digits by progressively denoising pure noise.
+![image](https://github.com/user-attachments/assets/cb77e792-f9c6-46a4-8462-5f8c3699dd45)
+
